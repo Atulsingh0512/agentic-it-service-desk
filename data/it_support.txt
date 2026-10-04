@@ -1,0 +1,31 @@
+COMPANY IT SUPPORT KNOWLEDGE BASE
+
+VPN SUPPORT
+
+If an employee cannot connect to the company VPN, first verify that the VPN server is operational.
+
+If the VPN server is operational, check the employee's internet connection and VPN client configuration.
+
+Employees should restart the VPN client and verify that they are using the latest approved VPN client version.
+
+If the problem continues, check firewall or antivirus settings and contact the IT support team.
+
+AUTHENTICATION SERVER
+
+The authentication server is responsible for employee login and authentication.
+
+If the authentication server is operational but an employee cannot authenticate, verify the employee's network connection and account configuration.
+
+Repeated authentication failures should be escalated to the IT support team.
+
+PASSWORD RESET
+
+Employees who forget their password should use the company's approved password-reset process.
+
+If self-service password reset fails, the employee should contact IT support.
+
+SECURITY
+
+Employees should never share their passwords, authentication codes, or security credentials with another person.
+
+Suspicious login activity should immediately be reported to the IT security team.

@@ -1,0 +1,87 @@
+services:
+
+  postgres:
+    image: postgres:18
+    container_name: service_desk_postgres
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: service_desk
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+    ports:
+      - "5433:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql
+
+
+  redis:
+    image: redis:8
+    container_name: service_desk_redis
+    restart: unless-stopped
+
+    ports:
+      - "6380:6379"
+
+    volumes:
+      - redis_data:/data
+
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: service_desk_backend
+    restart: unless-stopped
+
+    depends_on:
+      - postgres
+      - redis
+
+    environment:
+      DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/service_desk
+      REDIS_URL: redis://redis:6379/0
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      OLLAMA_BASE_URL: http://host.docker.internal:11434
+
+    ports:
+      - "8000:8000"
+
+    volumes:
+      - ./qdrant_data:/app/qdrant_data
+
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: service_desk_worker
+    restart: unless-stopped
+
+    depends_on:
+      - postgres
+      - redis
+
+    environment:
+      DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/service_desk
+      REDIS_URL: redis://redis:6379/0
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      OLLAMA_BASE_URL: http://host.docker.internal:11434
+
+    volumes:
+      - ./qdrant_data:/app/qdrant_data
+
+    command:
+      - python
+      - worker.py
+
+
+volumes:
+
+  postgres_data:
+
+  redis_data:
